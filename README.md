@@ -29,38 +29,22 @@ Amazon Textract による OCR とAmazon Bedrock による AI カテゴリ分類�
 - Bedrock でカテゴリ分類（AI）
   - 食費 / 交通費 / ショッピング / 医療 / 教育 / 光熱費
 
-### 4. 支出データ保存（DynamoDB）
-保存項目例：
-
-| 項目 | 内容 |
-|------|------|
-| userId | CognitoのユーザーID |
-| expenseId | PK、UUIDを使う |
-| date | 支出日 |
-| store | 店舗名 |
-| total | 合計金額 |
-| items | 明細リスト |
-| category | AI分類カテゴリ |
-| createdAt | 登録日時 |
-
-### 5. 支出一覧・検索
-- 月別、年別一覧
+### 4. 支出一覧・検索
+- 月別、年別
   - 必要に応じて、日付範囲検索
 - カテゴリ検索
-- （必要に応じて、）店舗名検索
+- 対象年の対象カテゴリにおける支出額の月次推移を示す棒グラフ
+- 対象年の支出額の月次推移を示す棒グラフ
 
-### 6. 月次レポート
+### 5. 月次レポート（ダッシュボードから表示？）
 - 月間支出合計
-- カテゴリ別支出グラフ（ダッシュボードから表示可能？）
-  - 対象月のカテゴリ別支出額割合を示す円グラフ
-  - 対象カテゴリの支出額の月次推移を示す棒グラフ
-- 直近1年の毎月の支出額推移の棒グラフ
+- 対象月のカテゴリ別支出額割合を示す円グラフ
 
-### 7. 予算管理・アラート
+### 6. 予算管理・アラート
 - カテゴリごとに月予算設定
 - 予算超過時にアラートとして SNS 通知（メール/SMS）
 
-### 8. データエクスポート
+### 7. データエクスポート
 - CSV ダウンロード
 - 月次レポートの Markdown 生成（任意）
 
@@ -97,7 +81,7 @@ flowchart TD
     CF --> APIGW[API Gateway]
 
     %% Backend API
-    APIGW --> API[Spring Boot API（Lambda）]
+    APIGW --> API[API（Lambda）]
     API --> DDB[DynamoDB]
     API --> SNS[SNS Budget Alerts]
 
@@ -121,7 +105,7 @@ flowchart TD
 - **CloudFront + S3**  
   Web UI をホスティングし、ユーザーがレシートをアップロードできる画面を提供。
 
-- **API Gateway + Spring Boot API（Lambda）**  
+- **API Gateway + API（Lambda）**  
   フロントからの API リクエストを受け、支出一覧・月次レポート・予算管理などを提供。
 
 - **S3（レシート保存）**  
